@@ -1,0 +1,96 @@
+$dark_blue: rgb(0, 11, 19);
+$light_blue: rgb(16, 64, 98);
+
+$blue: rgb(144, 202, 243);
+$green: rgb(154, 243, 144);
+$red: rgb(246, 121, 121);
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    width: 100%;
+    background-color: $dark_blue;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+
+    main {
+        width: 60vh;
+        padding: 15px;
+
+        background-color: white;
+        border-radius: 10px;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 15px;
+
+        text-align: center;
+
+        h1,
+        h2,
+        p {
+            margin: 0;
+        }
+
+        h1 {
+            color: $light_blue;
+        }
+
+        h2,
+        p {
+            color: $dark_blue;
+        }
+
+        input[type="submit"] {
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+
+            transition: all 0.1s ease-in-out;
+
+            &:hover {
+                background-color: $light_blue;
+                color: white;   
+            }
+        }
+
+        .rock{
+            background-color: $blue;
+            color: $dark_blue;
+        }
+
+        .paper{
+            background-color: $green;
+            color: $dark_blue;
+        }
+
+        .scissors{
+            background-color: $red;
+            color: $dark_blue;
+        }
+
+        a {
+            font-weight: bold;
+            background-color: $dark_blue;
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 18px;
+            text-decoration: none;
+
+            transition: background-color 0.1s ease-in-out;
+
+            &:hover {
+                background-color: $light_blue;
+            }
+        }
+    }
+}
