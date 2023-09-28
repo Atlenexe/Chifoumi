@@ -36,10 +36,10 @@ class GameInstance
         $this->player = new Player();
     }
 
-    public function startResult(): void
+    public function startResult($userChoice): void
     {
-        if (isset($_POST["choice"])) {
-            $userChoice = $_POST["choice"];
+        if (isset($userChoice)) {
+            $userChoice = $userChoice;
 
             $this->findChoice($userChoice);
             $this->displayResult();

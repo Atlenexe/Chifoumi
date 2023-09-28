@@ -18,7 +18,7 @@
 
         session_start();
 
-        $_SESSION['gameInstance']->startResult();
+        $_SESSION['gameInstance']->startResult($_POST["choice"]);
         ?>
 
         <a href="/chifoumi/index.php">Rejouer</a>
