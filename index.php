@@ -1,3 +1,20 @@
+<?php
+
+require_once("assets/classes/GameInstance.php");
+
+session_start();
+
+if (!isset($_SESSION['gameInstance'])) {
+    $gameInstance = new GameInstance();
+    $_SESSION['gameInstance'] = $gameInstance;
+} else {
+    $gameInstance = $_SESSION['gameInstance'];
+}
+
+$gameInstance->start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -15,9 +32,11 @@
         <h2>Choisissez un des trois éléments.</h2>
 
         <form action="result.php" method="post">
-            <input type="submit" name="choice" value="Pierre" class="rock">
-            <input type="submit" name="choice" value="Feuille" class="paper">
-            <input type="submit" name="choice" value="Ciseaux" class="scissors">
+            <?php
+            foreach ($gameInstance->choices as $choice) {
+                echo '<input type="submit" name="choice" value="' . $choice->value . '" class="' . $choice->value . '">';
+            }
+            ?>
         </form>
     </main>
 </body>

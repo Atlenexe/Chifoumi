@@ -58,21 +58,21 @@ body {
 
             &:hover {
                 background-color: $light_blue;
-                color: white;   
+                color: white;
             }
         }
 
-        .rock{
+        .rock {
             background-color: $blue;
             color: $dark_blue;
         }
 
-        .paper{
+        .paper {
             background-color: $green;
             color: $dark_blue;
         }
 
-        .scissors{
+        .scissors {
             background-color: $red;
             color: $dark_blue;
         }
