@@ -3,9 +3,9 @@ class Choice
 {
     public string $value = "";
     public string $label = "";
-    public string $nemesisValue = "";
+    public array $nemesisValue = [];
 
-    public function __construct(string $value, string $label, string $nemesisValue)
+    public function __construct(string $value, string $label, array $nemesisValue)
     {
         $this->value = $value;
         $this->label = $label;

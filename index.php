@@ -11,6 +11,10 @@ if (!isset($_SESSION['gameInstance'])) {
     $gameInstance = $_SESSION['gameInstance'];
 }
 
+if (isset($_POST["gamemod"])) {
+    $gameInstance->gameType = $_POST["gamemod"];
+}
+
 $gameInstance->start();
 
 ?>
@@ -28,6 +32,14 @@ $gameInstance->start();
 <body>
     <main>
         <h1>Chifoumi</h1>
+
+        <form action="" method="post">
+            <select name="gamemod">
+                <option value="0">Classique</option>
+                <option value="1">Lezard Spock</option>
+            </select>
+            <input type="submit">
+        </form>
 
         <h2>Choisissez un des trois éléments.</h2>
 

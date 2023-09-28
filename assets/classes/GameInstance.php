@@ -10,6 +10,7 @@ class GameInstance
     public int $stateCode = -1;
     public Player $player;
     public Computer $computer;
+    public int $gameType = 1;
 
     /**
      * @var Choice[] $choices
@@ -19,9 +20,18 @@ class GameInstance
     public function start(): void
     {
         $this->choices = [];
-        $this->choices[] = new Choice("rock", "Pierre", "paper");
-        $this->choices[] = new Choice("paper", "Papier", "scissors");
-        $this->choices[] = new Choice("scissors", "Ciseaux", "rock");
+
+        if ($this->gameType == 0) {
+            $this->choices[] = new Choice("rock", "Pierre", ["paper"]);
+            $this->choices[] = new Choice("paper", "Papier", ["scissors"]);
+            $this->choices[] = new Choice("scissors", "Ciseaux", ["rock"]);
+        } else if ($this->gameType == 1) {
+            $this->choices[] = new Choice("rock", "Pierre", ["paper", "spock"]);
+            $this->choices[] = new Choice("paper", "Papier", ["scissors", "lezard"]);
+            $this->choices[] = new Choice("scissors", "Ciseaux", ["rock", "spock"]);
+            $this->choices[] = new Choice("lezard", "Lezard", ["scissors", "rock"]);
+            $this->choices[] = new Choice("spock", "Spock", ["lezard", "paper"]);
+        }
 
         if (!isset($this->computer) || !isset($this->player)) {
             $this->initPlayer();
@@ -51,7 +61,7 @@ class GameInstance
         if ($this->player->choice->value == $this->computer->choice->value) {
             //Égalité (2)
             return 2;
-        } else if ($this->player->choice->value == $this->computer->choice->nemesisValue) {
+        } else if (in_array($this->player->choice->value, $this->computer->choice->nemesisValue)) {
             //Win (1)
             $this->player->score++;
             return 1;

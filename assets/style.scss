@@ -4,6 +4,8 @@ $light_blue: rgb(16, 64, 98);
 $blue: rgb(144, 202, 243);
 $green: rgb(154, 243, 144);
 $red: rgb(246, 121, 121);
+$yellow: rgb(246, 234, 121);
+$purple: rgb(186, 121, 246);
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -74,6 +76,16 @@ body {
 
         .scissors {
             background-color: $red;
+            color: $dark_blue;
+        }
+
+        .lezard {
+            background-color: $yellow;
+            color: $dark_blue;
+        }
+
+        .spock {
+            background-color: $purple;
             color: $dark_blue;
         }
 

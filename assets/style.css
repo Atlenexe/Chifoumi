@@ -56,6 +56,14 @@ body main .scissors {
   background-color: rgb(246, 121, 121);
   color: rgb(0, 11, 19);
 }
+body main .lezard {
+  background-color: rgb(246, 234, 121);
+  color: rgb(0, 11, 19);
+}
+body main .spock {
+  background-color: rgb(186, 121, 246);
+  color: rgb(0, 11, 19);
+}
 body main a {
   font-weight: bold;
   background-color: rgb(0, 11, 19);
