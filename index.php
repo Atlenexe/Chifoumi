@@ -58,7 +58,19 @@ $gameInstance->start();
             <div class="game">
                 <div class="player-infos">
                     <?php echo '<span><strong>Player :</strong> ' . $gameInstance->player->name . '</span>'; ?>
-                    <?php echo '<span><strong>Score :</strong> ' . $gameInstance->dataBase->selectFrom("name", $gameInstance->player->name)[0]["score"] . '</span>'; ?>
+                    <?php
+                    $score = 0;
+
+                    if (isset($gameInstance->dataBase->values)) {
+                        $score = $gameInstance->dataBase->selectFrom("name", $gameInstance->player->name)[0]["score"];
+
+                        if (!$score > 0) {
+                            $score = 0;
+                        }
+                    }
+
+                    echo '<span><strong>Score :</strong> ' . $score . '</span>';
+                    ?>
                 </div>
 
                 <form action="result.php" method="post">

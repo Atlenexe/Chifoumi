@@ -18,25 +18,31 @@ class DataBase
         file_put_contents($this->filePath . $this->dbName . ".json", json_encode([]));
     }
 
-    public function createValue(string $key, mixed $payload): void
+    public function createValue(mixed $payload): void
     {
-        $this->values[$key] = $payload;
+        $this->values[] = $payload;
         file_put_contents($this->filePath . $this->dbName . ".json", json_encode($this->values));
     }
 
     public function putValue(string $key, mixed $payload): void
     {
-        $this->values[$key] = $payload;
-        file_put_contents($this->filePath . $this->dbName . ".json", json_encode($this->values));
+        foreach ($this->values as $valuesKey => $value) {
+            if ($value[$key] === $payload[$key]) {
+                $this->values[$valuesKey] = $payload;
+                file_put_contents($this->filePath . $this->dbName . ".json", json_encode($this->values));
+            }
+        }
     }
 
     public function selectFrom(string $attributeName, string $value)
     {
         $result = [];
 
-        foreach ($this->values as $dbValue) {
-            if($dbValue[$attributeName] === $value){
-                $result[] = $dbValue;
+        if (isset($this->values)) {
+            foreach ($this->values as $dbValue) {
+                if ($dbValue[$attributeName] === $value) {
+                    $result[] = $dbValue;
+                }
             }
         }
 

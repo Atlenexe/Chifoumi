@@ -161,13 +161,13 @@ class GameInstance
             foreach ($this->dataBase->values as $value) {
                 if ($value["name"] == $score["name"]) {
                     $scoreExisting = true;
-                    $this->dataBase->putValue($score["name"], $score);
+                    $this->dataBase->putValue("name", $score);
                 }
             }
         }
 
         if (!$scoreExisting) {
-            $this->dataBase->createValue($score["name"], $score);
+            $this->dataBase->createValue($score);
         }
     }
 
