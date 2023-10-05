@@ -76,4 +76,9 @@ body main a {
 }
 body main a:hover {
   background-color: rgb(16, 64, 98);
+}
+
+.main-view {
+  display: flex;
+  flex-direction: row;
 }/*# sourceMappingURL=style.css.map */

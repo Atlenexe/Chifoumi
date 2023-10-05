@@ -15,6 +15,10 @@ if (isset($_POST["gamemod"])) {
     $gameInstance->gameType = $_POST["gamemod"];
 }
 
+if (isset($_POST["playerName"])) {
+    $gameInstance->selectPlayer($_POST["playerName"]);
+}
+
 $gameInstance->start();
 
 ?>
@@ -33,23 +37,36 @@ $gameInstance->start();
     <main>
         <h1>Chifoumi</h1>
 
-        <form action="" method="post">
-            <select name="gamemod">
-                <option value="0">Classique</option>
-                <option value="1">Lezard Spock</option>
-            </select>
-            <input type="submit">
-        </form>
+        <div class="main-view">
+            <div class="settings">
+                <h2>Mode de jeu :</h2>
+                <form action="" method="post">
+                    <select name="gamemod">
+                        <option value="0">Classique</option>
+                        <option value="1">Lezard Spock</option>
+                    </select>
+                    <input type="submit">
+                </form>
 
-        <h2>Choisissez un des trois éléments.</h2>
+                <h2>Votre nom :</h2>
+                <form action="" method="post">
+                    <input type="text" name="playerName">
+                    <input type="submit">
+                </form>
+            </div>
 
-        <form action="result.php" method="post">
-            <?php
-            foreach ($gameInstance->choices as $choice) {
-                echo '<input type="submit" name="choice" value="' . $choice->value . '" class="' . $choice->value . '">';
-            }
-            ?>
-        </form>
+            <div class="game">
+                <h2>Choisissez un des éléments pour jouer.</h2>
+
+                <form action="result.php" method="post">
+                    <?php
+                    foreach ($gameInstance->choices as $choice) {
+                        echo '<input type="submit" name="choice" value="' . $choice->value . '" class="' . $choice->value . '">';
+                    }
+                    ?>
+                </form>
+            </div>
+        </div>
     </main>
 </body>
 

@@ -8,9 +8,14 @@ class GameInstance
 {
     public string $title = "Chifoumi";
     public int $stateCode = -1;
+
+    /**
+     * @var Player[] $players
+     */
+    public array $players;
     public Player $player;
     public Computer $computer;
-    public int $gameType = 1;
+    public int $gameType = 0;
 
     /**
      * @var Choice[] $choices
@@ -46,6 +51,38 @@ class GameInstance
         $this->player = new Player();
     }
 
+    public function selectPlayer(string $name): void
+    {
+        if (!$this->checkPlayerExists($name)) {
+            //Créer un nouvel utilisateur
+            $newPlayer = new Player;
+            $newPlayer->name = $name;
+
+            $this->players[] = $newPlayer;
+            $this->player = $newPlayer;
+        } else {
+            //Choisir l'utilisateur existant
+            foreach ($this->players as $player) {
+                if ($player->name == $name) {
+                    $this->player = $player;
+                }
+            }
+        }
+    }
+
+    private function checkPlayerExists(string $name): bool
+    {
+        if (sizeof($this->players) > 0) {
+            foreach ($this->players as $player) {
+                if ($player->name == $name) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function startResult($userChoice): void
     {
         if (isset($userChoice)) {
@@ -53,22 +90,6 @@ class GameInstance
 
             $this->findChoice($userChoice);
             $this->displayResult();
-        }
-    }
-
-    private function checkWin(): int
-    {
-        if ($this->player->choice->value == $this->computer->choice->value) {
-            //Égalité (2)
-            return 2;
-        } else if (in_array($this->player->choice->value, $this->computer->choice->nemesisValue)) {
-            //Win (1)
-            $this->player->score++;
-            return 1;
-        } else {
-            //Loose (0)
-            $this->computer->score++;
-            return 0;
         }
     }
 
@@ -98,8 +119,24 @@ class GameInstance
         echo "<p>Vous avez choisi <strong>" . $this->player->choice->label . "</strong></p>";
         echo "<p>L'ordinateur a choici <strong>" . $this->computer->choice->label . "</strong></p>";
 
-        echo "<p>Votre score : <strong>" . $this->player->score . "</strong></p>";
+        echo "<p>Score de <strong>" . $this->player->name . "</strong> : <strong>" . $this->player->score . "</strong></p>";
         echo "<p>Score de l'ordinateur : <strong>" . $this->computer->score . "</strong></p>";
+    }
+
+    private function checkWin(): int
+    {
+        if ($this->player->choice->value == $this->computer->choice->value) {
+            //Égalité (2)
+            return 2;
+        } else if (in_array($this->player->choice->value, $this->computer->choice->nemesisValue)) {
+            //Win (1)
+            $this->player->score++;
+            return 1;
+        } else {
+            //Loose (0)
+            $this->computer->score++;
+            return 0;
+        }
     }
 
     private function findChoice(string $userChoice): void

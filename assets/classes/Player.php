@@ -6,4 +6,5 @@ class Player
 {
     public Choice $choice;
     public int $score = 0;
+    public string $name = "Player";
 }
