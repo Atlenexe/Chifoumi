@@ -10,8 +10,8 @@ body {
   height: 100vh;
 }
 body main {
-  width: 80vh;
   padding: 15px;
+  width: 40rem;
   background-color: white;
   border-radius: 10px;
   display: flex;
@@ -81,12 +81,31 @@ body main a:hover {
 .main-view {
   display: flex;
   flex-direction: row;
+  gap: 30px;
 }
 .main-view .settings {
   display: flex;
   flex-direction: column;
+  gap: 30px;
 }
 .main-view .settings form {
   display: flex;
   flex-direction: column;
+}
+.main-view .game {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.main-view .game .player-infos {
+  display: flex;
+  justify-content: space-between;
+}
+.main-view .game form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }/*# sourceMappingURL=style.css.map */

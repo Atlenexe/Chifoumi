@@ -39,18 +39,18 @@ $gameInstance->start();
 
         <div class="main-view">
             <div class="settings">
-                <h2>Mode de jeu :</h2>
                 <form action="" method="post">
+                    <h2>Mode de jeu :</h2>
                     <select name="gamemod">
-                        <option value="0">Classique</option>
-                        <option value="1">Lezard Spock</option>
+                        <option value="0" <?php if ($gameInstance->gameType == 0) echo 'selected="selected"'; ?>>Classique</option>
+                        <option value="1" <?php if ($gameInstance->gameType == 1) echo 'selected="selected"'; ?>>Lezard Spock</option>
                     </select>
                     <input type="submit">
                 </form>
 
-                <h2>Votre nom :</h2>
                 <form action="" method="post">
-                    <input type="text" name="playerName">
+                    <h2>Votre nom :</h2>
+                    <input type="text" name="playerName" value="<?php echo $gameInstance->player->name ?>">
                     <input type="submit">
                 </form>
             </div>
@@ -58,10 +58,8 @@ $gameInstance->start();
             <div class="game">
                 <div class="player-infos">
                     <?php echo '<span><strong>Player :</strong> ' . $gameInstance->player->name . '</span>'; ?>
-                    <?php echo '<span><strong>Score :</strong> ' . $gameInstance->player->score . '</span>'; ?>
+                    <?php echo '<span><strong>Score :</strong> ' . $gameInstance->dataBase->selectFrom("name", $gameInstance->player->name)[0]["score"] . '</span>'; ?>
                 </div>
-
-                <h2>Choisissez un des éléments pour jouer.</h2>
 
                 <form action="result.php" method="post">
                     <?php

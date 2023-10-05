@@ -3,6 +3,7 @@
 require_once("Choice.php");
 require_once("Computer.php");
 require_once("Player.php");
+require_once("DataBase.php");
 
 class GameInstance
 {
@@ -16,6 +17,7 @@ class GameInstance
     public Player $player;
     public Computer $computer;
     public int $gameType = 0;
+    public DataBase $dataBase;
 
     /**
      * @var Choice[] $choices
@@ -24,6 +26,10 @@ class GameInstance
 
     public function start(): void
     {
+        if (!isset($this->dataBase)) {
+            $this->dataBase = new DataBase("score");
+        }
+
         $this->choices = [];
 
         if ($this->gameType == 0) {
@@ -43,30 +49,12 @@ class GameInstance
         }
 
         $this->computer->pickRandom($this->choices);
-
-        $this->putScoreDB();
-    }
-
-    private function putScoreDB(): void
-    {
-        $scoresJson = [];
-
-        file_exists("assets/db/scores.json") ?: mkdir("assets/db");
-
-        foreach ($this->players as $player) {
-            $scoresJson[] = [
-                "name" => $player->name,
-                "score" => $player->score
-            ];
-        }
-
-        file_put_contents("assets/db/scores.json", json_encode($scoresJson));
     }
 
     private function initPlayer(): void
     {
         $this->computer = new Computer();
-        
+
         $this->player = new Player();
         $players[] = $this->player;
     }
@@ -92,7 +80,7 @@ class GameInstance
 
     private function checkPlayerExists(string $name): bool
     {
-        if (sizeof($this->players) > 0) {
+        if (isset($this->players)) {
             foreach ($this->players as $player) {
                 if ($player->name == $name) {
                     return true;
@@ -151,11 +139,35 @@ class GameInstance
         } else if (in_array($this->player->choice->value, $this->computer->choice->nemesisValue)) {
             //Win (1)
             $this->player->score++;
+            $this->registerScoreDB();
             return 1;
         } else {
             //Loose (0)
             $this->computer->score++;
             return 0;
+        }
+    }
+
+    private function registerScoreDB(): void
+    {
+        $score = [
+            "name" => $this->player->name,
+            "score" => $this->player->score
+        ];
+
+        $scoreExisting = false;
+
+        if (isset($this->dataBase->values)) {
+            foreach ($this->dataBase->values as $value) {
+                if ($value["name"] == $score["name"]) {
+                    $scoreExisting = true;
+                    $this->dataBase->putValue($score["name"], $score);
+                }
+            }
+        }
+
+        if (!$scoreExisting) {
+            $this->dataBase->createValue($score["name"], $score);
         }
     }
 
