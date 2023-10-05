@@ -21,7 +21,7 @@ body {
     height: 100vh;
 
     main {
-        width: 60vh;
+        width: 80vh;
         padding: 15px;
 
         background-color: white;
@@ -107,7 +107,17 @@ body {
     }
 }
 
-.main-view{
+.main-view {
     display: flex;
     flex-direction: row;
+
+    .settings{
+        display: flex;
+        flex-direction: column;
+
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }

@@ -10,7 +10,7 @@ body {
   height: 100vh;
 }
 body main {
-  width: 60vh;
+  width: 80vh;
   padding: 15px;
   background-color: white;
   border-radius: 10px;
@@ -81,4 +81,12 @@ body main a:hover {
 .main-view {
   display: flex;
   flex-direction: row;
+}
+.main-view .settings {
+  display: flex;
+  flex-direction: column;
+}
+.main-view .settings form {
+  display: flex;
+  flex-direction: column;
 }/*# sourceMappingURL=style.css.map */

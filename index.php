@@ -56,6 +56,11 @@ $gameInstance->start();
             </div>
 
             <div class="game">
+                <div class="player-infos">
+                    <?php echo '<span><strong>Player :</strong> ' . $gameInstance->player->name . '</span>'; ?>
+                    <?php echo '<span><strong>Score :</strong> ' . $gameInstance->player->score . '</span>'; ?>
+                </div>
+
                 <h2>Choisissez un des éléments pour jouer.</h2>
 
                 <form action="result.php" method="post">
