@@ -43,12 +43,32 @@ class GameInstance
         }
 
         $this->computer->pickRandom($this->choices);
+
+        $this->putScoreDB();
+    }
+
+    private function putScoreDB(): void
+    {
+        $scoresJson = [];
+
+        file_exists("assets/db/scores.json") ?: mkdir("assets/db");
+
+        foreach ($this->players as $player) {
+            $scoresJson[] = [
+                "name" => $player->name,
+                "score" => $player->score
+            ];
+        }
+
+        file_put_contents("assets/db/scores.json", json_encode($scoresJson));
     }
 
     private function initPlayer(): void
     {
         $this->computer = new Computer();
+        
         $this->player = new Player();
+        $players[] = $this->player;
     }
 
     public function selectPlayer(string $name): void
