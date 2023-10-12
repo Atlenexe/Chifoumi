@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once("Choice.php");
 require_once("Computer.php");
@@ -27,7 +30,7 @@ class GameInstance
     public function start(): void
     {
         if (!isset($this->dataBase)) {
-            $this->dataBase = new DataBase("score");
+            $this->dataBase = new DataBase("score", "json");
         }
 
         $this->choices = [];
@@ -157,8 +160,8 @@ class GameInstance
 
         $scoreExisting = false;
 
-        if (isset($this->dataBase->values)) {
-            foreach ($this->dataBase->values as $value) {
+        if ($this->dataBase->selectAll() !== null) {
+            foreach ($this->dataBase->selectAll() as $value) {
                 if ($value["name"] == $score["name"]) {
                     $scoreExisting = true;
                     $this->dataBase->putValue("name", $score);

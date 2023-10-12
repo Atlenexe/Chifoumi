@@ -1,51 +1,85 @@
 <?php
 
+require_once("JsonDB.php");
+require_once("MysqlDB.php");
+
 class DataBase
 {
     public string $filePath = "assets/db/";
-    public string $dbName = "";
-    public array $values;
 
-    public function __construct(string $dbName)
+    public string $host;
+    public string $port;
+    public string $username;
+    public string $password;
+
+    public string $dbName = "";
+    public string $dbType = "json";
+
+    public function __construct(string $dbName, string $dbType)
     {
         $this->dbName = $dbName;
+        $this->dbType = $dbType;
         $this->initDB();
     }
 
-    private function initDB()
+    private function initDB(): void
     {
-        file_exists($this->filePath . $this->dbName) ?: mkdir($this->filePath);
-        file_put_contents($this->filePath . $this->dbName . ".json", json_encode([]));
+        switch ($this->dbType) {
+            case 'mysql':
+                //MysqlDB::initDB($this->dbName, $this->host, $this->port, $this->username, $this->password);
+                break;
+
+            default:
+                JsonDB::initDB($this->filePath, $this->dbName);
+                break;
+        }
     }
 
     public function createValue(mixed $payload): void
     {
-        $this->values[] = $payload;
-        file_put_contents($this->filePath . $this->dbName . ".json", json_encode($this->values));
+        switch ($this->dbType) {
+            case 'mysql':
+                break;
+
+            default:
+                JsonDB::createValue($this->filePath, $this->dbName, $payload);
+                break;
+        }
     }
 
     public function putValue(string $key, mixed $payload): void
     {
-        foreach ($this->values as $valuesKey => $value) {
-            if ($value[$key] === $payload[$key]) {
-                $this->values[$valuesKey] = $payload;
-                file_put_contents($this->filePath . $this->dbName . ".json", json_encode($this->values));
-            }
+        switch ($this->dbType) {
+            case 'mysql':
+                break;
+
+            default:
+                JsonDB::putValue($this->filePath, $this->dbName, $key, $payload);
+                break;
         }
     }
 
-    public function selectFrom(string $attributeName, string $value)
+    public function selectFrom(string $attributeName, string $value): array
     {
-        $result = [];
+        switch ($this->dbType) {
+            case 'mysql':
+                break;
 
-        if (isset($this->values)) {
-            foreach ($this->values as $dbValue) {
-                if ($dbValue[$attributeName] === $value) {
-                    $result[] = $dbValue;
-                }
-            }
+            default:
+                return JsonDB::selectFrom($this->filePath, $this->dbName, $attributeName, $value);
+                break;
         }
+    }
 
-        return $result;
+    public function selectAll(): array
+    {
+        switch ($this->dbType) {
+            case 'mysql':
+                break;
+
+            default:
+                return JsonDB::selectAll($this->filePath, $this->dbName);
+                break;
+        }
     }
 }

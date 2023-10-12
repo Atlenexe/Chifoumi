@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once("assets/classes/GameInstance.php");
 
 session_start();
@@ -60,14 +64,6 @@ $gameInstance->start();
                     <?php echo '<span><strong>Player :</strong> ' . $gameInstance->player->name . '</span>'; ?>
                     <?php
                     $score = 0;
-
-                    if (isset($gameInstance->dataBase->values)) {
-                        $score = $gameInstance->dataBase->selectFrom("name", $gameInstance->player->name)[0]["score"];
-
-                        if (!$score > 0) {
-                            $score = 0;
-                        }
-                    }
 
                     echo '<span><strong>Score :</strong> ' . $score . '</span>';
                     ?>
