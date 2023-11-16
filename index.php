@@ -63,9 +63,7 @@ $gameInstance->start();
                 <div class="player-infos">
                     <?php echo '<span><strong>Player :</strong> ' . $gameInstance->player->name . '</span>'; ?>
                     <?php
-                    $score = 0;
-
-                    echo '<span><strong>Score :</strong> ' . $score . '</span>';
+                    echo '<span><strong>Score :</strong> ' . $gameInstance->player->score . '</span>';
                     ?>
                 </div>
 
