@@ -22,6 +22,9 @@ class GameInstance
     public int $gameType = 0;
     public DataBase $dataBase;
 
+    private string $databaseType = "mysql";
+    private string $tableName = "score";
+
     /**
      * @var Choice[] $choices
      */
@@ -29,7 +32,7 @@ class GameInstance
 
     public function __construct()
     {
-        $this->dataBase = new DataBase("score", "json");
+        $this->dataBase = new DataBase($this->tableName, $this->databaseType);
 
         $playersDB = $this->dataBase->selectAll();
 
@@ -57,10 +60,6 @@ class GameInstance
 
     public function start(): void
     {
-        if (!isset($this->dataBase)) {
-            $this->dataBase = new DataBase("score", "mysql");
-        }
-
         $this->choices = [];
 
         if ($this->gameType == 0) {
