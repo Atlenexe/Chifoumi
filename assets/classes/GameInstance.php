@@ -27,6 +27,34 @@ class GameInstance
      */
     public array $choices = [];
 
+    public function __construct()
+    {
+        $this->dataBase = new DataBase("score", "mysql");
+
+        $playersDB = $this->dataBase->selectAll();
+
+        $defaultPlayer = false;
+
+        foreach ($playersDB as $playerDB) {
+            $player = new Player;
+            $player->name = $playerDB["name"];
+            $player->score = $playerDB["score"];
+
+            if ($player->name == "Player") {
+                $defaultPlayer = true;
+            }
+
+            $this->players[] = $player;
+        }
+
+        if (!$defaultPlayer) {
+            $this->initPlayer();
+        }
+
+        $this->computer = new Computer();
+        $this->selectPlayer($this->players[0]->name);
+    }
+
     public function start(): void
     {
         if (!isset($this->dataBase)) {
@@ -47,17 +75,11 @@ class GameInstance
             $this->choices[] = new Choice("spock", "Spock", ["lezard", "paper"]);
         }
 
-        if (!isset($this->computer) || !isset($this->player)) {
-            $this->initPlayer();
-        }
-
         $this->computer->pickRandom($this->choices);
     }
 
     private function initPlayer(): void
     {
-        $this->computer = new Computer();
-
         $this->player = new Player();
         $players[] = $this->player;
     }

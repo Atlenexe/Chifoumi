@@ -90,16 +90,22 @@ class MysqlDB
         self::initConnection();
         $con = self::$con;
 
-        $result = [];
+        $resultArray = [];
 
         $query = "SELECT * FROM score";
+        $result = $con->query($query);
 
-        if (!$con->query($query)) {
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $resultArray[] = $row;
+            }
+            $result->free_result();
+        } else {
             echo "Error: " . $con->error;
         }
 
         self::closeConnection();
 
-        return $result;
+        return $resultArray;
     }
 }
