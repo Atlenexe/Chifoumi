@@ -2,14 +2,34 @@
 
 class MysqlDB
 {
+    private static $con;
+
+    private const HOST = "localhost";
+    private const USER = "root";
+    private const PASSWORD = "root";
+    private const DATABASE = "chifoumi";
+    private const PORT = 3306;
+
+    public static function initConnection()
+    {
+        self::$con = new mysqli(self::HOST, self::USER, self::PASSWORD, self::DATABASE, self::PORT);
+
+        if (self::$con->connect_error) {
+            die("Connection failed: " . self::$con->connect_error);
+        }
+    }
+
+    public static function closeConnection()
+    {
+        if (self::$con) {
+            self::$con->close();
+        }
+    }
 
     public static function createValue(mixed $payload): void
     {
-        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
+        self::initConnection();
+        $con = self::$con;
 
         $score = $payload["score"];
         $name = $payload["name"];
@@ -20,16 +40,13 @@ class MysqlDB
             echo "Error: " . $con->error;
         }
 
-        $con->close();
+        self::closeConnection();
     }
 
     public static function putValue(string $key, mixed $payload): void
     {
-        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
+        self::initConnection();
+        $con = self::$con;
 
         $score = $payload["score"];
         $name = $payload["name"];
@@ -40,18 +57,15 @@ class MysqlDB
             echo "Error: " . $con->error;
         }
 
-        $con->close();
+        self::closeConnection();
     }
 
     public static function selectFrom(string $attributeName, string $value): array
     {
+        self::initConnection();
+        $con = self::$con;
+
         $resultArray = [];
-
-        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
 
         $query = "SELECT * FROM score WHERE " . $attributeName . " = '" . $value . "'";
         $result = $con->query($query);
@@ -61,22 +75,22 @@ class MysqlDB
                 $resultArray[] = $row;
             }
             $result->free_result();
+        } else {
+            echo "Error: " . $con->error;
         }
 
-        $con->close();
+        self::closeConnection();
 
         return $resultArray;
     }
 
+
     public static function selectAll(): array
     {
+        self::initConnection();
+        $con = self::$con;
+
         $result = [];
-
-        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
 
         $query = "SELECT * FROM score";
 
@@ -84,7 +98,7 @@ class MysqlDB
             echo "Error: " . $con->error;
         }
 
-        $con->close();
+        self::closeConnection();
 
         return $result;
     }
