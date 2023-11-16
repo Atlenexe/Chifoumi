@@ -13,7 +13,7 @@ class DataBase
     public string $password;
 
     public string $dbName = "";
-    public string $dbType = "json";
+    public string $dbType = "";
 
     public function __construct(string $dbName, string $dbType)
     {
@@ -26,7 +26,6 @@ class DataBase
     {
         switch ($this->dbType) {
             case 'mysql':
-                //MysqlDB::initDB($this->dbName, $this->host, $this->port, $this->username, $this->password);
                 break;
 
             default:
@@ -39,6 +38,7 @@ class DataBase
     {
         switch ($this->dbType) {
             case 'mysql':
+                MysqlDB::createValue($payload);
                 break;
 
             default:
@@ -51,6 +51,7 @@ class DataBase
     {
         switch ($this->dbType) {
             case 'mysql':
+                MysqlDB::putValue($key, $payload);
                 break;
 
             default:
@@ -63,6 +64,7 @@ class DataBase
     {
         switch ($this->dbType) {
             case 'mysql':
+                return MysqlDB::selectFrom($attributeName, $value);
                 break;
 
             default:
@@ -75,6 +77,7 @@ class DataBase
     {
         switch ($this->dbType) {
             case 'mysql':
+                return MysqlDB::selectAll();
                 break;
 
             default:

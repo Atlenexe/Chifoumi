@@ -3,96 +3,89 @@
 class MysqlDB
 {
 
-    /*
-    public static function initDB(string $tableName, string $host = "localhost", string $username = "root", string $password = "root"): void
+    public static function createValue(mixed $payload): void
     {
-        $con = new mysqli($host, $username, $password);
+        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
 
         if (!$con) {
             die("Connection failed: " . $con->connect_error);
         }
 
-        if (!$con->select_db("database")) {
+        $score = $payload["score"];
+        $name = $payload["name"];
 
-            $query = "CREATE DATABASE database";
+        $query = "INSERT INTO score (name, score) VALUES ('" . $name . "', " . $score . ")";
 
-            if ($con->query($query)) {
-                echo "Database created successfully";
-            } else {
-                echo "Error creating database: " . $con->error;
+        if (!$con->query($query)) {
+            echo "Error: " . $con->error;
+        }
+
+        $con->close();
+    }
+
+    public static function putValue(string $key, mixed $payload): void
+    {
+        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
+
+        if (!$con) {
+            die("Connection failed: " . $con->connect_error);
+        }
+
+        $score = $payload["score"];
+        $name = $payload["name"];
+
+        $query = "UPDATE score SET name = '" . $name . "', score = " . $score . " WHERE " . $key . " = '" . $name . "'";
+
+        if (!$con->query($query)) {
+            echo "Error: " . $con->error;
+        }
+
+        $con->close();
+    }
+
+    public static function selectFrom(string $attributeName, string $value): array
+    {
+        $resultArray = [];
+
+        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
+
+        if (!$con) {
+            die("Connection failed: " . $con->connect_error);
+        }
+
+        $query = "SELECT * FROM score WHERE " . $attributeName . " = '" . $value . "'";
+        $result = $con->query($query);
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $resultArray[] = $row;
             }
-
-            $con->select_db("database");
-        }
-
-        $query = "CREATE TABLE " . $tableName . "";
-
-            if ($con->query($query)) {
-                echo "Table created successfully";
-            } else {
-                echo "Error creating table: " . $con->error;
-            }
-
-        $con->close();
-    }
-
-    public static function createValue(string $tableName, string $host, string $username, string $password, mixed $payload): void
-    {
-        $con = new mysqli($host, $username, $password);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
-
-        $query = "";
-
-        if ($con->query($query)) {
-            echo "Value created successfully";
-        } else {
-            echo "Error creating database: " . $con->error;
+            $result->free_result();
         }
 
         $con->close();
+
+        return $resultArray;
     }
 
-    public static function putValue(string $tableName, string $host, string $username, string $password, string $key, mixed $payload): void
-    {
-        $con = new mysqli($host, $username, $password);
-
-        if (!$con) {
-            die("Connection failed: " . $con->connect_error);
-        }
-
-        $query = "";
-
-        if ($con->query($query)) {
-            echo "Value edit successfully";
-        } else {
-            echo "Error creating database: " . $con->error;
-        }
-
-        $con->close();
-    }
-
-    public static function selectFrom(string $tableName, string $host, string $username, string $password, string $attributeName, string $value): array
+    public static function selectAll(): array
     {
         $result = [];
 
-        $con = new mysqli($host, $username, $password);
+        $con = new mysqli("localhost", "root", "root", "chifoumi", 3306);
 
         if (!$con) {
             die("Connection failed: " . $con->connect_error);
         }
 
-        $query = "SELECT * FROM " . $tableName . " WHERE " . $attributeName . " = " . $value;
+        $query = "SELECT * FROM score";
 
         if (!$con->query($query)) {
-            echo "Select error: " . $con->error;
+            echo "Error: " . $con->error;
         }
 
         $con->close();
 
         return $result;
     }
-    */
 }

@@ -30,7 +30,7 @@ class GameInstance
     public function start(): void
     {
         if (!isset($this->dataBase)) {
-            $this->dataBase = new DataBase("score", "json");
+            $this->dataBase = new DataBase("score", "mysql");
         }
 
         $this->choices = [];
@@ -160,13 +160,9 @@ class GameInstance
 
         $scoreExisting = false;
 
-        if ($this->dataBase->selectAll() !== null) {
-            foreach ($this->dataBase->selectAll() as $value) {
-                if ($value["name"] == $score["name"]) {
-                    $scoreExisting = true;
-                    $this->dataBase->putValue("name", $score);
-                }
-            }
+        if (sizeof($this->dataBase->selectFrom("name", $this->player->name)) > 0) {
+            $scoreExisting = true;
+            $this->dataBase->putValue("name", $score);
         }
 
         if (!$scoreExisting) {
