@@ -1,6 +1,8 @@
 <?php
 
-class MysqlDB
+require_once("assets/interfaces/DatabaseInterface.php");
+
+class MysqlDB implements DatabaseInterface
 {
     private static $con;
 

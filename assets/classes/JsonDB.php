@@ -1,7 +1,12 @@
 <?php
 
-class JsonDB
+require_once("assets/interfaces/DatabaseInterface.php");
+
+class JsonDB implements DatabaseInterface
 {
+    private string $filePath = "assets/db/";
+    private string $dbName = "score";
+
     public static function initDB(string $filePath, string $dbName): void
     {
         file_exists($filePath . $dbName) ?: mkdir($filePath);
@@ -10,34 +15,34 @@ class JsonDB
         }
     }
 
-    public static function createValue(string $filePath, string $dbName, mixed $payload): void
+    public static function createValue(mixed $payload): void
     {
-        $values = json_decode(file_get_contents($filePath . $dbName . ".json"), true);
+        $values = json_decode(file_get_contents(self::$filePath . self::$dbName . ".json"), true);
 
         $values === null ? [] : $values;
 
         $values[] = $payload;
-        file_put_contents($filePath . $dbName . ".json", json_encode($values));
+        file_put_contents(self::$filePath . self::$dbName . ".json", json_encode($values));
     }
 
-    public static function putValue(string $filePath, string $dbName, string $key, mixed $payload): void
+    public static function putValue(string $key, mixed $payload): void
     {
-        $values = json_decode(file_get_contents($filePath . $dbName . ".json"), true);
+        $values = json_decode(file_get_contents(self::$filePath . self::$dbName . ".json"), true);
 
         $values === null ? [] : $values;
 
         foreach ($values as $valuesKey => $value) {
             if ($value[$key] === $payload[$key]) {
                 $values[$valuesKey] = $payload;
-                file_put_contents($filePath . $dbName . ".json", json_encode($values));
+                file_put_contents(self::$filePath . self::$dbName . ".json", json_encode($values));
             }
         }
     }
 
-    public static function selectFrom(string $filePath, string $dbName, string $attributeName, string $value): array
+    public static function selectFrom(string $attributeName, string $value): array
     {
         $result = [];
-        $values = json_decode(file_get_contents($filePath . $dbName . ".json"), true);
+        $values = json_decode(file_get_contents(self::$filePath . self::$dbName . ".json"), true);
 
         if (isset($values)) {
             foreach ($values as $dbValue) {
@@ -50,9 +55,9 @@ class JsonDB
         return $result === null ? [] : $result;
     }
 
-    public static function selectAll(string $filePath, string $dbName): array
+    public static function selectAll(): array
     {
-        $values = json_decode(file_get_contents($filePath . $dbName . ".json"), true);
+        $values = json_decode(file_get_contents(self::$filePath . self::$dbName . ".json"), true);
 
         return $values === null ? [] : $values;
     }
