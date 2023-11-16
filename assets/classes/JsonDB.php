@@ -5,7 +5,9 @@ class JsonDB
     public static function initDB(string $filePath, string $dbName): void
     {
         file_exists($filePath . $dbName) ?: mkdir($filePath);
-        file_put_contents($filePath . $dbName . ".json", json_encode([]));
+        if (json_decode(file_get_contents($filePath . $dbName . ".json"), true) === null) {
+            file_put_contents($filePath . $dbName . ".json", json_encode([]));
+        }
     }
 
     public static function createValue(string $filePath, string $dbName, mixed $payload): void

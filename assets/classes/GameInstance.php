@@ -29,7 +29,7 @@ class GameInstance
 
     public function __construct()
     {
-        $this->dataBase = new DataBase("score", "mysql");
+        $this->dataBase = new DataBase("score", "json");
 
         $playersDB = $this->dataBase->selectAll();
 
@@ -52,7 +52,7 @@ class GameInstance
         }
 
         $this->computer = new Computer();
-        $this->selectPlayer($this->players[0]->name);
+        $this->selectPlayer("Player");
     }
 
     public function start(): void
